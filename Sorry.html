@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Message Just For You</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Open+Sans:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        /* CSS goes here */
+        body {
+            font-family: 'Open Sans', sans-serif; /* A clean, readable font */
+            background-color: #f0f8ff; /* Light blue background */
+            color: #333;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* Make sure it takes full viewport height */
+            padding: 20px;
+            box-sizing: border-box; /* Include padding in element's total width and height */
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        header h1 {
+            font-family: 'Dancing Script', cursive; /* A more elegant font for the title */
+            color: #ff6347; /* Tomato red, warm and impactful */
+            font-size: 3em;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        main p {
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .intro-message {
+            font-weight: bold;
+            color: #555;
+            margin-bottom: 25px;
+            font-size: 1.2em;
+        }
+
+        .call-to-action {
+            font-style: italic;
+            color: #007bff; /* Blue for a gentle call to action */
+            margin-top: 30px;
+            margin-bottom: 30px;
+            font-size: 1.15em;
+        }
+
+        button {
+            background-color: #28a745; /* Green for a positive action */
+            color: white;
+            padding: 15px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #218838; /* Darker green on hover */
+            transform: translateY(-2px);
+        }
+
+        .hidden {
+            display: none; /* Hides the message until the button is clicked */
+            margin-top: 20px;
+            color: #d9534f; /* Red for emphasis */
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        footer {
+            margin-top: 40px;
+            font-size: 0.9em;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>My Sincere Apology</h1>
+        </header>
+
+        <main>
+            <p class="intro-message">
+                Please, just hear me out.
+            </p>
+            <p>
+                I'm writing this because I'm truly sorry. I know I messed up, and I regret upsetting you.
+                It wasn't my intention, and I genuinely feel bad about how things turned out.
+            </p>
+            <p>
+                There's no "Nishi" and there's no one else. My focus is, and always has been, on you.
+                I only want to talk to you and fix things between us.
+            </p>
+            <p>
+                My anger isn't important right now; what matters is how you feel.
+                If you're upset, it affects me too.
+            </p>
+            <p class="call-to-action">
+                Could you please reply or let me know what's on your mind? I miss talking to you.
+            </p>
+            <button id="revealMessage">Click here when you're ready to forgive a little</button>
+            <p id="hiddenMessage" class="hidden">
+                Thank you for even considering. It means the world to me. Please, let's talk soon. ❤️
+            </p>
+        </main>
+
+        <footer>
+            <p>&copy; [Your Name] - 2025</p>
+        </footer>
+    </div>
+
+    <script>
+        // JavaScript goes here
+        document.addEventListener('DOMContentLoaded', function() {
+            const revealButton = document.getElementById('revealMessage');
+            const hiddenMessage = document.getElementById('hiddenMessage');
+
+            if (revealButton && hiddenMessage) {
+                revealButton.addEventListener('click', function() {
+                    hiddenMessage.classList.remove('hidden'); // Show the hidden message
+                    revealButton.style.display = 'none'; // Hide the button after click
+                });
+            }
+        });
+    </script>
+</body>
+</html>
