@@ -3,142 +3,663 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A Message Just For You</title>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Open+Sans:wght@300;400;700&display=swap" rel="stylesheet">
+    <title>Nexus Hub - Premium Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        /* CSS goes here */
-        body {
-            font-family: 'Open Sans', sans-serif; /* A clean, readable font */
-            background-color: #f0f8ff; /* Light blue background */
-            color: #333;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh; /* Make sure it takes full viewport height */
-            padding: 20px;
-            box-sizing: border-box; /* Include padding in element's total width and height */
-        }
-
-        .container {
-            background-color: #fff;
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-            text-align: center;
-            max-width: 600px;
-            width: 100%;
-        }
-
-        header h1 {
-            font-family: 'Dancing Script', cursive; /* A more elegant font for the title */
-            color: #ff6347; /* Tomato red, warm and impactful */
-            font-size: 3em;
-            margin-bottom: 20px;
-            line-height: 1.2;
-        }
-
-        main p {
-            font-size: 1.1em;
-            line-height: 1.6;
-            margin-bottom: 15px;
-        }
-
-        .intro-message {
-            font-weight: bold;
-            color: #555;
-            margin-bottom: 25px;
-            font-size: 1.2em;
-        }
-
-        .call-to-action {
-            font-style: italic;
-            color: #007bff; /* Blue for a gentle call to action */
-            margin-top: 30px;
-            margin-bottom: 30px;
-            font-size: 1.15em;
-        }
-
-        button {
-            background-color: #28a745; /* Green for a positive action */
-            color: white;
-            padding: 15px 25px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.1em;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            margin-top: 20px;
-        }
-
-        button:hover {
-            background-color: #218838; /* Darker green on hover */
-            transform: translateY(-2px);
-        }
-
-        .hidden {
-            display: none; /* Hides the message until the button is clicked */
-            margin-top: 20px;
-            color: #d9534f; /* Red for emphasis */
-            font-weight: bold;
-            font-size: 1.2em;
-        }
-
-        footer {
-            margin-top: 40px;
-            font-size: 0.9em;
-            color: #777;
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; }
+        .glass { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(12px); }
+        .active-glow { box-shadow: 0 0 20px rgba(79, 70, 229, 0.3); }
+        .reward-pop { animation: pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        @keyframes pop { 0% { transform: scale(0.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .mood-btn.disabled { opacity: 0.5; cursor: not-allowed; filter: grayscale(1); }
     </style>
 </head>
-<body>
-    <div class="container">
-        <header>
-            <h1>My Sincere Apology<br>I am really sorry yrr<br>Shivani 😔
+<body class="bg-[#f8fafc] text-slate-900 transition-colors duration-500">
+    
+
+    <!-- LOGIN OVERLAY -->
+    <div id="login-screen" class="fixed inset-0 z-[100] flex items-center justify-center bg-indigo-600 p-4">
+        <div class="bg-white w-full max-w-md rounded-[2.5rem] shadow-2xl p-10 space-y-8">
+            <div id="login-step-1" class="space-y-4">
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-indigo-600 rounded-2xl flex items-center justify-center text-white text-2xl font-black mx-auto shadow-xl mb-4">N</div>
+                    <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Nexus Hub</h1>
+                    <p class="text-slate-500 font-medium">Select Your Portal</p>
+                </div>
+                <div class="grid grid-cols-1 gap-2">
+                    <button onclick="selectRole('owner', 'BOSS')" class="flex items-center gap-4 p-3 rounded-2xl border-2 border-slate-100 hover:border-slate-900 hover:bg-slate-50 transition-all group text-left">
+                        <div class="w-10 h-10 bg-slate-900 text-white rounded-xl flex items-center justify-center"><i class="fas fa-crown"></i></div>
+                        <div><p class="font-bold text-sm">Facility Boss</p><p class="text-[10px] text-slate-400 font-bold uppercase">Master Oversight</p></div>
+                    </button>
+                    <button onclick="selectRole('receptionist', 'FRONT')" class="flex items-center gap-4 p-3 rounded-2xl border-2 border-slate-100 hover:border-indigo-600 hover:bg-indigo-50 transition-all group text-left">
+                        <div class="w-10 h-10 bg-indigo-600 text-white rounded-xl flex items-center justify-center"><i class="fas fa-concierge-bell"></i></div>
+                        <div><p class="font-bold text-sm">Receptionist</p><p class="text-[10px] text-slate-400 font-bold uppercase">Registration</p></div>
+                    </button>
+                    <button onclick="selectRole('guard', 'GUARD')" class="flex items-center gap-4 p-3 rounded-2xl border-2 border-slate-100 hover:border-red-600 hover:bg-red-50 transition-all group text-left">
+                        <div class="w-10 h-10 bg-red-600 text-white rounded-xl flex items-center justify-center"><i class="fas fa-shield-halved"></i></div>
+                        <div><p class="font-bold text-sm">Security Guard</p><p class="text-[10px] text-slate-400 font-bold uppercase">Movement Control</p></div>
+                    </button>
+                    <button onclick="selectRole('manager', 'MGR')" class="flex items-center gap-4 p-3 rounded-2xl border-2 border-slate-100 hover:border-emerald-600 hover:bg-emerald-50 transition-all group text-left">
+                        <div class="w-10 h-10 bg-emerald-500 text-white rounded-xl flex items-center justify-center"><i class="fas fa-user-tie"></i></div>
+                        <div><p class="font-bold text-sm">Zone Managers</p><p class="text-[10px] text-slate-400 font-bold uppercase">Gym/Mart/Lib</p></div>
+                    </button>
+                    <button onclick="selectRole('user', 'USER')" class="flex items-center gap-4 p-3 rounded-2xl border-2 border-slate-100 hover:border-indigo-600 hover:bg-indigo-50 transition-all group text-left">
+                        <div class="w-10 h-10 bg-indigo-100 text-indigo-600 rounded-xl flex items-center justify-center"><i class="fas fa-user-circle"></i></div>
+                        <div><p class="font-bold text-sm">Member Access</p><p class="text-[10px] text-slate-400 font-bold uppercase">View Activity</p></div>
+                    </button>
+                </div>
+            </div>
+
+            <div id="login-step-2" class="hidden space-y-6">
+                <button onclick="backToStep1()" class="text-indigo-600 font-bold text-sm flex items-center gap-2"><i class="fas fa-arrow-left"></i> Change Portal</button>
+                <div class="text-center">
+                    <h2 id="auth-title" class="text-2xl font-bold">Verification</h2>
+                    <p id="auth-subtitle" class="text-slate-400 text-sm mt-1"></p>
+                </div>
+                <div class="space-y-4">
+                    <input id="auth-id-input" type="text" placeholder="Enter ID or PIN" class="w-full px-6 py-4 bg-slate-50 border-2 border-slate-100 rounded-3xl text-center text-xl font-black outline-none focus:border-indigo-600 transition-all">
+                    <button onclick="handleAuthSubmit()" class="w-full bg-slate-900 text-white py-4 rounded-3xl font-black shadow-lg hover:bg-black transition-all">Enter Portal</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN APP CONTAINER -->
+    <div id="app-container" class="hidden min-h-screen">
+        <nav class="fixed left-0 top-0 h-full w-20 lg:w-72 bg-white border-r border-slate-200 flex flex-col z-50 transition-all">
+            <div class="p-8 flex items-center gap-4">
+                <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white font-black">N</div>
+                <span class="hidden lg:block font-black text-xl tracking-tighter">NEXUS HUB</span>
+            </div>
             
-            </h1>
-        </header>
+            <div class="flex-1 px-4 space-y-2 overflow-y-auto" id="nav-links"></div>
 
-        <main>
-            <p class="intro-message">
-                Please, just hear me out.
-            </p>
-            <p>
-                Ye message main isliye bhej raha hoon kyunki **mujhe sach mein maafi maangni hai**. I know mujhse galti hui hai, aur tumhe hurt karke I genuinely regret it. Mera aisa koi matlab nahi tha, aur jo bhi hua, usse mujhe sach mein bura lag raha hai.
-            </p>
-            <p>
-                Dekho, **koi 'Nishi' nahi hogi ab se **.  Main bas tumse baat karke yeh sab theek karna chahta hoon.
-            </p>
-            <p>
-                Abhi mera naraz hona important nahi; important yeh hai ki **tum kya feel kar rahi ho**. Agar tum upset ho, toh uska farak mujh pe bhi padta hai.
-            </p>
-            <p class="call-to-action">
-                Please yaar, kya tum reply karogi ya bataogi kya chal raha hai tumhare mind mein? **I really miss talking to you.**
-            </p>
-            <button id="revealMessage">Click here when you're ready to forgive a little</button>
-            <p id="hiddenMessage" class="hidden">
-                Thank you for even considering. It means a lot to me. Please, let's talk soon. ❤️
-            </p>
+            <div class="p-6 border-t border-slate-100 space-y-4">
+                <div id="active-user-badge" class="hidden lg:flex items-center gap-3 p-3 bg-slate-50 rounded-2xl border border-slate-100">
+                    <div class="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center text-xs font-bold" id="badge-initial">U</div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-xs font-black truncate" id="badge-name">User Name</p>
+                        <p class="text-[10px] text-slate-400 font-bold" id="badge-role">Role</p>
+                    </div>
+                </div>
+                <button onclick="logout()" class="w-full flex items-center justify-center gap-2 text-red-500 font-bold text-sm py-2 hover:bg-red-50 rounded-xl transition-all">
+                    <i class="fas fa-power-off"></i> <span class="hidden lg:block">Log Out</span>
+                </button>
+            </div>
+        </nav>
+
+        <main class="ml-20 lg:ml-72 p-6 lg:p-12 transition-all">
+            <!-- STAFF BROADCAST ALERT (Visible to Staff) -->
+            <div id="broadcast-alert" class="hidden mb-8 bg-amber-50 border-2 border-amber-200 p-6 rounded-[2rem] flex items-center gap-6 shadow-sm">
+                <div class="w-12 h-12 bg-amber-500 text-white rounded-2xl flex items-center justify-center text-xl shrink-0">
+                    <i class="fas fa-bullhorn"></i>
+                </div>
+                <div class="flex-1">
+                    <p class="text-[10px] font-black text-amber-600 uppercase tracking-widest">Nexus Directive (From Boss)</p>
+                    <p id="broadcast-msg" class="font-bold text-amber-900"></p>
+                </div>
+                <button onclick="clearBroadcast()" class="text-amber-400 hover:text-amber-600"><i class="fas fa-times"></i></button>
+            </div>
+            
+            <!-- VIEW: BOSS -->
+            <div id="view-owner" class="hidden space-y-10 max-w-7xl mx-auto">
+                <div class="flex justify-between items-end">
+                    <div>
+                        <h1 class="text-4xl font-black tracking-tight text-slate-900">Executive Oversight</h1>
+                        <p class="text-slate-500 font-medium">Complete facility monitoring</p>
+                    </div>
+                    <div class="flex gap-4">
+                         <button onclick="toggleModal('broadcast-modal', true)" class="bg-indigo-600 text-white px-6 py-3 rounded-2xl font-black flex items-center gap-2 shadow-lg hover:bg-indigo-700 transition-all">
+                            <i class="fas fa-broadcast-tower"></i> Broadcast Directive
+                        </button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6" id="owner-stats-grid"></div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="occupancy-boss"></div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div class="bg-white p-8 rounded-[2.5rem] border border-slate-200 shadow-sm">
+                        <h3 class="text-xl font-black mb-6">Staff Activity</h3>
+                        <div id="staff-active-list" class="space-y-4"></div>
+                    </div>
+                    <div class="bg-white p-8 rounded-[2.5rem] border border-slate-200 shadow-sm">
+                        <h3 class="text-xl font-black mb-6">Active Directives</h3>
+                        <div id="boss-directives-list" class="space-y-4 text-center py-10 text-slate-400">
+                             <p class="text-sm font-medium">No active broadcasts</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- VIEW: RECEPTIONIST -->
+            <div id="view-receptionist" class="hidden space-y-8 max-w-4xl mx-auto">
+                <h1 class="text-4xl font-black">Front Desk</h1>
+                <div class="bg-white p-8 rounded-[2.5rem] border-2 border-indigo-100 shadow-xl space-y-6">
+                    <div class="flex items-center gap-3"><h3 class="text-xl font-black">Register New Member</h3></div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <input id="reg-name" type="text" placeholder="Full Name" class="px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl">
+                        <input id="reg-id" type="text" placeholder="Desired Login ID" class="px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl uppercase">
+                    </div>
+                    <div>
+                        <p class="text-xs font-black text-slate-400 mb-2 px-2 uppercase">Membership Tier</p>
+                        <div class="grid grid-cols-3 gap-2">
+                            <button onclick="setRegTier('Standard')" class="tier-btn py-3 rounded-xl border-2 border-slate-100 font-bold text-xs hover:bg-slate-50 transition-all bg-indigo-50 border-indigo-600 text-indigo-600" data-tier="Standard">Standard</button>
+                            <button onclick="setRegTier('Pro')" class="tier-btn py-3 rounded-xl border-2 border-slate-100 font-bold text-xs hover:bg-slate-50 transition-all" data-tier="Pro">Pro</button>
+                            <button onclick="setRegTier('VIP')" class="tier-btn py-3 rounded-xl border-2 border-slate-100 font-bold text-xs hover:bg-slate-50 transition-all" data-tier="VIP">VIP</button>
+                        </div>
+                    </div>
+                    <button onclick="registerUser()" class="w-full bg-indigo-600 text-white py-5 rounded-3xl font-black">FINALIZE REGISTRATION</button>
+                </div>
+                <div id="recent-admissions-list" class="space-y-4"></div>
+            </div>
+
+            <!-- VIEW: GUARD -->
+            <div id="view-guard" class="hidden space-y-8 max-w-6xl mx-auto">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h1 class="text-4xl font-black text-red-600">Security Station</h1>
+                        <p class="text-slate-500 font-medium">Manage user presence</p>
+                    </div>
+                    <div class="bg-red-50 px-6 py-3 rounded-2xl border border-red-100">
+                        <p class="text-[10px] font-black text-red-400 uppercase">Live Watch</p>
+                        <p class="font-black text-red-600" id="guard-total-users">0 Users Active</p>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 gap-4" id="guard-user-control-list"></div>
+            </div>
+
+            <!-- VIEW: MANAGER -->
+            <div id="view-manager" class="hidden space-y-8 max-w-6xl mx-auto">
+                <div class="flex justify-between items-center">
+                    <h1 class="text-4xl font-black">Mart Manager</h1>
+                    <button onclick="toggleModal('item-modal', true)" class="bg-emerald-600 text-white px-8 py-4 rounded-2xl font-black">Add Item</button>
+                </div>
+                <div id="manager-content" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+            </div>
+
+            <!-- VIEW: USER -->
+            <div id="view-user" class="hidden space-y-8 max-w-6xl mx-auto">
+                <div class="flex items-center justify-between bg-white p-8 rounded-[2.5rem] border border-slate-200 shadow-sm">
+                    <div class="flex items-center gap-5">
+                        <div class="w-20 h-20 bg-indigo-600 rounded-3xl flex items-center justify-center text-white text-3xl font-black" id="u-avatar">?</div>
+                        <div>
+                            <h1 class="text-4xl font-black" id="u-welcome">Hello!</h1>
+                            <div class="flex items-center gap-3 mt-1">
+                                <div class="flex items-center gap-2 text-emerald-600 font-bold text-sm">
+                                    <i class="fas fa-location-dot"></i>
+                                    <span id="u-location">Lobby</span>
+                                </div>
+                                <span id="u-tier-badge" class="px-3 py-1 bg-indigo-50 text-indigo-600 text-[10px] font-black rounded-full uppercase border border-indigo-100">Standard</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-xs font-black text-slate-400">NEXUS XP</p>
+                        <p class="text-5xl font-black text-indigo-600" id="u-xp">0</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="occupancy-user"></div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div class="lg:col-span-2 space-y-8">
+                        <div id="mood-section" class="bg-indigo-600 p-8 rounded-[2.5rem] text-white space-y-6 transition-all">
+                            <div class="flex justify-between items-center">
+                                <h3 class="text-xl font-bold">Vibe Check</h3>
+                                <span id="vibe-xp-badge" class="bg-white/20 px-3 py-1 rounded-full text-[10px] font-black">+10 XP</span>
+                            </div>
+                            <p id="vibe-status-msg" class="text-indigo-100 opacity-80">How's the session going today?</p>
+                            <div class="flex gap-4" id="mood-btn-container">
+                                <button onclick="logMood('🔥')" class="mood-btn w-14 h-14 bg-white/10 hover:bg-white/20 rounded-2xl text-2xl flex items-center justify-center transition-all">🔥</button>
+                                <button onclick="logMood('⚡')" class="mood-btn w-14 h-14 bg-white/10 hover:bg-white/20 rounded-2xl text-2xl flex items-center justify-center transition-all">⚡</button>
+                                <button onclick="logMood('📚')" class="mood-btn w-14 h-14 bg-white/10 hover:bg-white/20 rounded-2xl text-2xl flex items-center justify-center transition-all">📚</button>
+                                <button onclick="logMood('☕')" class="mood-btn w-14 h-14 bg-white/10 hover:bg-white/20 rounded-2xl text-2xl flex items-center justify-center transition-all">☕</button>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-8 rounded-[2.5rem] border border-slate-200">
+                            <h3 class="text-xl font-black mb-6">Activity Timeline</h3>
+                            <div id="u-history-list" class="space-y-4"></div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-8">
+                        <div class="bg-white p-8 rounded-[2.5rem] border border-slate-200">
+                            <h3 class="text-xl font-black mb-4">Daily Quests</h3>
+                            <div class="space-y-3" id="u-quest-list"></div>
+                        </div>
+
+                        <div class="bg-white p-8 rounded-[2.5rem] border border-slate-200">
+                            <h3 class="text-xl font-black mb-4">Mart Catalog</h3>
+                            <div id="u-mart-view" class="space-y-4"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </main>
+    </div>
 
-        <footer>
-            <p>&copy; [Piyush Rajput] - 2025</p>
-        </footer>
+    <!-- BROADCAST MODAL -->
+    <div id="broadcast-modal" class="fixed inset-0 z-[110] hidden flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+        <div class="bg-white w-full max-w-md rounded-[2.5rem] p-8 shadow-2xl">
+            <h3 class="text-2xl font-black mb-2">Nexus Directive</h3>
+            <p class="text-slate-400 text-sm mb-6">Send a priority message to all staff dashboards.</p>
+            <div class="space-y-4 mb-8">
+                <textarea id="broadcast-input" rows="4" placeholder="Type your directive here..." class="w-full px-5 py-4 bg-slate-50 border rounded-2xl resize-none focus:border-indigo-600 outline-none font-medium"></textarea>
+            </div>
+            <div class="flex gap-3">
+                <button onclick="toggleModal('broadcast-modal', false)" class="flex-1 py-4 font-bold text-slate-400">Cancel</button>
+                <button onclick="sendBroadcast()" class="flex-1 bg-indigo-600 text-white rounded-2xl font-black shadow-lg shadow-indigo-200">Broadcast Now</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ITEM MODAL -->
+    <div id="item-modal" class="fixed inset-0 z-[110] hidden flex items-center justify-center bg-black/50 p-4">
+        <div class="bg-white w-full max-w-md rounded-[2.5rem] p-8 shadow-2xl">
+            <h3 class="text-2xl font-black mb-6">New Mart Item</h3>
+            <div class="space-y-4 mb-8">
+                <input id="item-name" type="text" placeholder="Name" class="w-full px-5 py-4 bg-slate-50 border rounded-2xl">
+                <input id="item-price" type="number" placeholder="Price" class="w-full px-5 py-4 bg-slate-50 border rounded-2xl">
+                <input id="item-stock" type="number" placeholder="Stock" class="w-full px-5 py-4 bg-slate-50 border rounded-2xl">
+            </div>
+            <div class="flex gap-3">
+                <button onclick="toggleModal('item-modal', false)" class="flex-1 py-4 font-bold text-slate-400">Cancel</button>
+                <button onclick="saveNewItem()" class="flex-1 bg-emerald-600 text-white rounded-2xl font-black shadow-lg shadow-emerald-200">Save Item</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 translate-y-32 opacity-0 transition-all duration-500 z-[200]">
+        <div class="bg-slate-900 text-white px-8 py-4 rounded-3xl shadow-2xl flex items-center gap-4">
+            <span id="toast-icon"></span>
+            <span id="toast-msg" class="font-bold"></span>
+        </div>
     </div>
 
     <script>
-        // JavaScript goes here
-        document.addEventListener('DOMContentLoaded', function() {
-            const revealButton = document.getElementById('revealMessage');
-            const hiddenMessage = document.getElementById('hiddenMessage');
+        // PERSISTENCE UTILS
+        const saveState = () => {
+            localStorage.setItem('nexus_users', JSON.stringify(users));
+            localStorage.setItem('nexus_mart', JSON.stringify(martItems));
+            localStorage.setItem('nexus_broadcast', activeBroadcast || "");
+        };
 
-            if (revealButton && hiddenMessage) {
-                revealButton.addEventListener('click', function() {
-                    hiddenMessage.classList.remove('hidden'); // Show the hidden message
-                    revealButton.style.display = 'none'; // Hide the button after click
-                });
+        const loadState = () => {
+            const savedUsers = localStorage.getItem('nexus_users');
+            const savedMart = localStorage.getItem('nexus_mart');
+            const savedBroadcast = localStorage.getItem('nexus_broadcast');
+            if (savedUsers) users = JSON.parse(savedUsers);
+            if (savedMart) martItems = JSON.parse(savedMart);
+            if (savedBroadcast) activeBroadcast = savedBroadcast;
+        };
+
+        const getExactTime = () => new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
+        const getExactDate = () => new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+        // APP STATE
+        let users = [
+            { id: "NX101", name: "Peeyush Rajput", xp: 1450, tier: "VIP", location: "Lobby", 
+              lastBonusClaim: null, lastVibeClaim: null,
+              history: [
+                { date: getExactDate(), time: getExactTime(), zone: "Facility Entry", duration: "Joined Hub" }
+              ]}
+        ];
+
+        let martItems = [
+            { id: 1, name: "Whey Isolate", price: 3200, stock: 15, sold: 42 },
+            { id: 2, name: "Protein Bar", price: 90, stock: 120, sold: 340 },
+            { id: 3, name: "Energy Drink", price: 150, stock: 50, sold: 12 }
+        ];
+
+        let activeBroadcast = "";
+        let currentSession = null;
+        let loginRole = null;
+        let selectedRegTier = 'Standard';
+        const LOCATIONS = ["Lobby", "Gym", "Library", "Mart", "Exit"];
+
+        loadState();
+
+        // AUTH
+        function selectRole(role, hint) {
+            loginRole = role;
+            document.getElementById('login-step-1').classList.add('hidden');
+            document.getElementById('login-step-2').classList.remove('hidden');
+            document.getElementById('auth-title').innerText = `${role.toUpperCase()} Login`;
+            document.getElementById('auth-subtitle').innerText = `Use PIN: ${hint}`;
+        }
+
+        function backToStep1() {
+            document.getElementById('login-step-1').classList.remove('hidden');
+            document.getElementById('login-step-2').classList.add('hidden');
+        }
+
+        function handleAuthSubmit() {
+            const input = document.getElementById('auth-id-input').value.trim().toUpperCase();
+            let success = false;
+            
+            if (loginRole === 'owner' && input === 'BOSS') success = { role: 'owner', name: 'Facility Boss' };
+            else if (loginRole === 'receptionist' && input === 'FRONT') success = { role: 'receptionist', name: 'Receptionist' };
+            else if (loginRole === 'guard' && input === 'GUARD') success = { role: 'guard', name: 'Security Guard' };
+            else if (loginRole === 'manager' && input === 'MGR') success = { role: 'manager', name: 'Mart Manager' };
+            else if (loginRole === 'user') {
+                const u = users.find(u => u.id === input);
+                if (u) success = { role: 'user', name: u.name, data: u };
             }
-        });
+
+            if (success) {
+                currentSession = success;
+                document.getElementById('login-screen').classList.add('hidden');
+                document.getElementById('app-container').classList.remove('hidden');
+                setupNav();
+                updateBadge();
+                checkBroadcast();
+                switchView(success.role);
+                notify(`Logged in as ${success.name}`, "fa-check");
+            } else notify("Invalid Credentials", "fa-times");
+        }
+
+        function logout() { saveState(); location.reload(); }
+
+        // BROADCAST LOGIC
+        function checkBroadcast() {
+            const alert = document.getElementById('broadcast-alert');
+            const msg = document.getElementById('broadcast-msg');
+            const isStaff = ['receptionist', 'guard', 'manager'].includes(currentSession.role);
+            
+            if (activeBroadcast && isStaff) {
+                msg.innerText = activeBroadcast;
+                alert.classList.remove('hidden');
+            } else {
+                alert.classList.add('hidden');
+            }
+        }
+
+        function sendBroadcast() {
+            const val = document.getElementById('broadcast-input').value.trim();
+            if (!val) return;
+            activeBroadcast = val;
+            saveState();
+            toggleModal('broadcast-modal', false);
+            notify("Directive broadcasted to all staff", "fa-tower-broadcast");
+            renderOwner();
+        }
+
+        function clearBroadcast() {
+            activeBroadcast = "";
+            saveState();
+            checkBroadcast();
+            notify("Directive cleared", "fa-check");
+        }
+
+        // NAVIGATION
+        function setupNav() {
+            const links = document.getElementById('nav-links');
+            let items = '';
+            if (currentSession.role === 'owner') {
+                items += navItem('owner', 'fa-crown', 'Oversight');
+                items += navItem('receptionist', 'fa-concierge-bell', 'Reception');
+                items += navItem('guard', 'fa-shield-halved', 'Security');
+                items += navItem('manager', 'fa-boxes-packing', 'Mart');
+            } else if (currentSession.role === 'receptionist') items += navItem('receptionist', 'fa-address-card', 'Registration');
+            else if (currentSession.role === 'guard') items += navItem('guard', 'fa-shield-halved', 'Guard Post');
+            else if (currentSession.role === 'manager') items += navItem('manager', 'fa-store', 'Inventory');
+            else if (currentSession.role === 'user') items += navItem('user', 'fa-user-astronaut', 'My Dashboard');
+            links.innerHTML = items;
+        }
+
+        const navItem = (v, i, l) => `
+            <button onclick="switchView('${v}')" class="nav-btn w-full flex items-center gap-4 px-6 py-4 rounded-2xl text-slate-400 font-bold transition-all hover:bg-slate-50" data-view="${v}">
+                <i class="fas ${i} w-6 text-xl"></i><span class="hidden lg:block">${l}</span>
+            </button>`;
+
+        function switchView(view) {
+            document.querySelectorAll('main > div:not(#broadcast-alert)').forEach(d => d.classList.add('hidden'));
+            document.getElementById(`view-${view}`).classList.remove('hidden');
+            document.querySelectorAll('.nav-btn').forEach(b => {
+                b.classList.remove('bg-indigo-50', 'text-indigo-600', 'active-glow');
+                if (b.dataset.view === view) b.classList.add('bg-indigo-50', 'text-indigo-600', 'active-glow');
+            });
+            if (view === 'owner') renderOwner();
+            if (view === 'receptionist') renderReceptionist();
+            if (view === 'guard') renderGuard();
+            if (view === 'manager') renderManager();
+            if (view === 'user') renderUser();
+        }
+
+        function updateBadge() {
+            const badge = document.getElementById('active-user-badge');
+            badge.classList.remove('hidden');
+            document.getElementById('badge-name').innerText = currentSession.name;
+            document.getElementById('badge-role').innerText = currentSession.role.toUpperCase();
+            document.getElementById('badge-initial').innerText = currentSession.name[0];
+        }
+
+        // OCCUPANCY
+        function renderOccupancy(targetId) {
+            const gym = users.filter(u => u.location === 'Gym').length;
+            const lib = users.filter(u => u.location === 'Library').length;
+            const mart = users.filter(u => u.location === 'Mart').length;
+            document.getElementById(targetId).innerHTML = `
+                <div class="bg-white p-6 rounded-[2rem] border border-slate-200 shadow-sm text-center">
+                    <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center text-xl mx-auto mb-4"><i class="fas fa-dumbbell"></i></div>
+                    <p class="text-[10px] font-black text-slate-400 uppercase">Gym</p>
+                    <h4 class="text-3xl font-black">${gym}</h4>
+                </div>
+                <div class="bg-white p-6 rounded-[2rem] border border-slate-200 shadow-sm text-center">
+                    <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center text-xl mx-auto mb-4"><i class="fas fa-book"></i></div>
+                    <p class="text-[10px] font-black text-slate-400 uppercase">Library</p>
+                    <h4 class="text-3xl font-black">${lib}</h4>
+                </div>
+                <div class="bg-white p-6 rounded-[2rem] border border-slate-200 shadow-sm text-center">
+                    <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center text-xl mx-auto mb-4"><i class="fas fa-shop"></i></div>
+                    <p class="text-[10px] font-black text-slate-400 uppercase">Mart</p>
+                    <h4 class="text-3xl font-black">${mart}</h4>
+                </div>`;
+        }
+
+        // USER FUNCTIONS
+        function claimDailyBonus() {
+            const u = users.find(user => user.id === (currentSession.data?.id || users[0].id));
+            const today = getExactDate();
+            if (u.lastBonusClaim === today) return notify("Bonus already claimed today", "fa-clock");
+            u.xp += 50; u.lastBonusClaim = today;
+            saveState(); renderUser(); notify("Daily Bonus Claimed! +50 XP", "fa-gift");
+        }
+
+        function logMood(mood) {
+            const u = users.find(user => user.id === (currentSession.data?.id || users[0].id));
+            const today = getExactDate();
+            if (u.lastVibeClaim === today) return notify("Vibe check already completed today", "fa-clock");
+            u.xp += 10; u.lastVibeClaim = today;
+            saveState(); renderUser(); notify(`Vibe Recorded: ${mood}! +10 XP`, "fa-bolt");
+        }
+
+        function renderUser() {
+            const u = users.find(user => user.id === (currentSession.data?.id || users[0].id));
+            const today = getExactDate();
+            const hasBonus = u.lastBonusClaim === today;
+            const hasVibe = u.lastVibeClaim === today;
+
+            document.getElementById('u-welcome').innerText = `Welcome, ${u.name}!`;
+            document.getElementById('u-location').innerText = u.location;
+            document.getElementById('u-xp').innerText = u.xp;
+            document.getElementById('u-avatar').innerText = u.name[0];
+            document.getElementById('u-tier-badge').innerText = u.tier;
+            
+            // Vibe Section State
+            const vibeSec = document.getElementById('mood-section');
+            const vibeMsg = document.getElementById('vibe-status-msg');
+            const vibeBtns = document.getElementById('mood-btn-container');
+            const vibeBadge = document.getElementById('vibe-xp-badge');
+
+            if (hasVibe) {
+                vibeSec.classList.add('bg-slate-900'); vibeSec.classList.remove('bg-indigo-600');
+                vibeMsg.innerText = "Session mood locked in for today. Come back tomorrow!";
+                vibeBtns.classList.add('hidden');
+                vibeBadge.innerHTML = '<i class="fas fa-check"></i>';
+            } else {
+                vibeSec.classList.remove('bg-slate-900'); vibeSec.classList.add('bg-indigo-600');
+                vibeMsg.innerText = "How's the session going today?";
+                vibeBtns.classList.remove('hidden');
+                vibeBadge.innerText = '+10 XP';
+            }
+
+            renderOccupancy('occupancy-user');
+
+            document.getElementById('u-quest-list').innerHTML = `
+                <div class="p-4 ${hasBonus ? 'bg-emerald-50 border-emerald-100' : 'bg-indigo-50 border-indigo-100'} rounded-2xl border flex items-center justify-between transition-all">
+                    <div class="flex gap-4">
+                        <div class="w-10 h-10 ${hasBonus ? 'bg-emerald-500' : 'bg-indigo-500'} text-white rounded-xl flex items-center justify-center shrink-0">
+                            <i class="fas ${hasBonus ? 'fa-check' : 'fa-gift'}"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs font-bold ${hasBonus ? 'text-emerald-900' : 'text-indigo-900'}">Daily Entry Bonus</p>
+                            <p class="text-[10px] ${hasBonus ? 'text-emerald-600' : 'text-indigo-600'} font-bold">${hasBonus ? 'Claimed' : '+50 XP Available'}</p>
+                        </div>
+                    </div>
+                    ${!hasBonus ? `<button onclick="claimDailyBonus()" class="px-4 py-2 bg-indigo-600 text-white text-[10px] font-black rounded-lg">CLAIM</button>` : `<span class="text-[10px] font-black text-emerald-600">DONE</span>`}
+                </div>
+            `;
+
+            document.getElementById('u-history-list').innerHTML = u.history.map(h => `
+                <div class="p-4 bg-white border border-slate-100 rounded-2xl flex justify-between items-center hover:bg-slate-50">
+                    <div class="flex items-center gap-4">
+                        <div class="w-2 h-2 rounded-full bg-indigo-500"></div>
+                        <div><p class="font-bold text-sm">${h.zone}</p><p class="text-[10px] text-slate-400 font-bold uppercase">${h.date} @ ${h.time}</p></div>
+                    </div>
+                    <span class="text-[10px] font-black bg-indigo-50 text-indigo-600 px-3 py-1 rounded-full">${h.duration}</span>
+                </div>`).join('');
+            
+            document.getElementById('u-mart-view').innerHTML = martItems.map(i => `
+                <div class="flex justify-between items-center py-3 border-b border-slate-50">
+                    <div><p class="text-xs font-bold">${i.name}</p><p class="text-[8px] font-black text-slate-300 uppercase">${i.stock > 0 ? 'In Stock' : 'Out of Stock'}</p></div>
+                    <span class="text-xs font-black text-emerald-600">₹${i.price}</span>
+                </div>`).join('');
+        }
+
+        // OWNER VIEW
+        function renderOwner() {
+            renderOccupancy('occupancy-boss');
+            document.getElementById('owner-stats-grid').innerHTML = [
+                { l: 'Total Users', v: users.length, i: 'fa-users', c: 'indigo' },
+                { l: 'Revenue', v: '₹84,200', i: 'fa-indian-rupee-sign', c: 'emerald' },
+                { l: 'Incidents', v: '0', i: 'fa-triangle-exclamation', c: 'orange' },
+                { l: 'Active Staff', v: '4', i: 'fa-user-tie', c: 'blue' }
+            ].map(s => `<div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm"><i class="fas ${s.i} text-${s.c}-600 mb-4 text-xl"></i><p class="text-[10px] font-black text-slate-400 uppercase tracking-wider">${s.l}</p><h4 class="text-2xl font-black">${s.v}</h4></div>`).join('');
+
+            const directivesList = document.getElementById('boss-directives-list');
+            if (activeBroadcast) {
+                directivesList.innerHTML = `
+                    <div class="bg-amber-50 border-2 border-amber-200 p-5 rounded-3xl relative">
+                        <p class="text-xs font-black text-amber-700 uppercase mb-2">Live Broadcast</p>
+                        <p class="text-sm font-bold text-amber-900">"${activeBroadcast}"</p>
+                        <button onclick="clearBroadcast(); renderOwner();" class="mt-4 text-[10px] font-black text-amber-600 border border-amber-300 px-4 py-1.5 rounded-xl hover:bg-amber-100">REVOKE DIRECTIVE</button>
+                    </div>`;
+            } else {
+                directivesList.innerHTML = `<p class="text-sm font-medium text-slate-400">No active directives</p>`;
+            }
+
+            document.getElementById('staff-active-list').innerHTML = users.slice().reverse().slice(0, 5).map(u => `
+                <div class="flex items-center justify-between p-4 bg-slate-50 rounded-2xl">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 bg-indigo-600 text-white rounded-lg flex items-center justify-center text-xs font-bold">${u.name[0]}</div>
+                        <div><p class="font-bold text-sm">${u.name}</p><p class="text-[8px] font-black text-slate-400">${u.history[0]?.time || 'Just now'}</p></div>
+                    </div>
+                    <span class="text-[10px] font-black px-3 py-1 bg-white border border-slate-200 rounded-lg uppercase">${u.location}</span>
+                </div>`).join('');
+        }
+
+        // GUARD
+        function renderGuard() {
+            document.getElementById('guard-total-users').innerText = `${users.length} Users Tracked`;
+            document.getElementById('guard-user-control-list').innerHTML = users.map(u => `
+                <div class="bg-white p-6 rounded-3xl border border-slate-200 flex flex-col md:flex-row items-center justify-between gap-6 shadow-sm">
+                    <div class="flex items-center gap-4 min-w-[200px]">
+                        <div class="w-12 h-12 bg-red-50 text-red-600 rounded-2xl flex items-center justify-center text-xl font-black">${u.name[0]}</div>
+                        <div><p class="font-black text-slate-800">${u.name}</p><p class="text-[10px] font-black text-slate-400 uppercase">${u.location}</p></div>
+                    </div>
+                    <div class="flex-1 flex flex-wrap gap-2 justify-center">
+                        ${LOCATIONS.map(loc => `<button onclick="moveUser('${u.id}', '${loc}')" class="px-4 py-2 rounded-xl text-xs font-black transition-all ${u.location === loc ? 'bg-red-600 text-white shadow-lg' : 'bg-slate-50 text-slate-400 hover:bg-slate-100'}">${loc}</button>`).join('')}
+                    </div>
+                    <div class="text-right"><p class="font-black text-red-600">ID: ${u.id}</p></div>
+                </div>`).join('');
+        }
+
+        function moveUser(userId, newLocation) {
+            const user = users.find(u => u.id === userId);
+            if (user.location === newLocation) return;
+            user.location = newLocation;
+            user.history.unshift({ date: getExactDate(), time: getExactTime(), zone: `Moved to ${newLocation}`, duration: "Guard Check" });
+            saveState(); notify(`${user.name} moved to ${newLocation}`, "fa-person-walking");
+            renderGuard();
+        }
+
+        // MANAGER & RECEPTIONIST (Generic)
+        function renderManager() {
+            document.getElementById('manager-content').innerHTML = martItems.map(i => `
+                <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm">
+                    <h4 class="font-black mb-1">${i.name}</h4>
+                    <p class="text-xs text-slate-400 mb-4">Stock: ${i.stock} | ₹${i.price}</p>
+                    <div class="flex gap-2">
+                        <button onclick="changeStock(${i.id}, -1)" class="w-10 h-10 bg-slate-100 rounded-lg">-</button>
+                        <button onclick="changeStock(${i.id}, 1)" class="w-10 h-10 bg-slate-900 text-white rounded-lg">+</button>
+                    </div>
+                </div>`).join('');
+        }
+
+        function changeStock(id, amt) {
+            const item = martItems.find(i => i.id === id);
+            item.stock = Math.max(0, item.stock + amt);
+            saveState(); renderManager();
+        }
+
+        function saveNewItem() {
+            const name = document.getElementById('item-name').value;
+            const price = parseInt(document.getElementById('item-price').value);
+            const stock = parseInt(document.getElementById('item-stock').value);
+            martItems.push({ id: Date.now(), name, price, stock, sold: 0 });
+            saveState(); toggleModal('item-modal', false); renderManager();
+        }
+
+        function setRegTier(tier) {
+            selectedRegTier = tier;
+            document.querySelectorAll('.tier-btn').forEach(b => {
+                b.classList.remove('bg-indigo-50', 'border-indigo-600', 'text-indigo-600');
+                if (b.dataset.tier === tier) b.classList.add('bg-indigo-50', 'border-indigo-600', 'text-indigo-600');
+            });
+        }
+
+        function registerUser() {
+            const name = document.getElementById('reg-name').value.trim();
+            const id = document.getElementById('reg-id').value.toUpperCase().trim();
+            if (!name || !id) return notify("Missing fields", "fa-warning");
+            if (users.some(u => u.id === id)) return notify("ID Already Exists", "fa-warning");
+            users.push({ id, name, xp: 50, tier: selectedRegTier, location: "Lobby", lastBonusClaim: null, lastVibeClaim: null, history: [{ date: getExactDate(), time: getExactTime(), zone: "Registered", duration: "New Member" }] });
+            saveState(); notify(`${name} Registered`, "fa-user-plus"); renderReceptionist();
+            document.getElementById('reg-name').value = ''; document.getElementById('reg-id').value = '';
+        }
+
+        function renderReceptionist() {
+            document.getElementById('recent-admissions-list').innerHTML = users.slice().reverse().map(u => `<div class="flex items-center gap-4 p-4 bg-white rounded-2xl border border-slate-100"><div class="w-10 h-10 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center font-black">${u.name[0]}</div><div class="flex-1"><p class="font-black text-sm">${u.name} <span class="text-[8px] px-2 py-0.5 bg-slate-100 rounded ml-1 uppercase">${u.tier}</span></p><p class="text-[10px] text-slate-400">ID: ${u.id}</p></div><div class="text-[10px] font-black px-3 py-1 bg-emerald-100 text-emerald-600 rounded-full">${u.location}</div></div>`).join('');
+        }
+
+        function toggleModal(id, show) { document.getElementById(id).classList.toggle('hidden', !show); }
+        function notify(msg, icon) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-msg').innerText = msg;
+            document.getElementById('toast-icon').innerHTML = `<i class="fas ${icon}"></i>`;
+            toast.classList.remove('translate-y-32', 'opacity-0');
+            setTimeout(() => toast.classList.add('translate-y-32', 'opacity-0'), 3000);
+        }
     </script>
 </body>
 </html>
