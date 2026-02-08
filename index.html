@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
         body { font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; }
         .glass { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(12px); }
         .active-glow { box-shadow: 0 0 20px rgba(79, 70, 229, 0.3); }
@@ -15,54 +15,68 @@
         @keyframes pop { 0% { transform: scale(0.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
         .mood-btn.disabled { opacity: 0.5; cursor: not-allowed; filter: grayscale(1); }
         .cyber-glass {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(22px);
-            border: 1px solid rgba(129, 140, 248, 0.35);
-            box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.06), 0 12px 40px rgba(79, 70, 229, 0.12);
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.4), 0 12px 40px rgba(34, 211, 238, 0.08);
         }
-        .glow-border { border: 1px solid rgba(129, 140, 248, 0.6); box-shadow: 0 0 20px rgba(99, 102, 241, 0.2); }
+        .glow-border { border: 1px solid rgba(99, 102, 241, 0.5); box-shadow: 0 0 24px rgba(34, 211, 238, 0.15); }
+        .font-data { font-family: 'IBM Plex Mono', 'Space Mono', monospace; letter-spacing: 0.08em; }
         .tactile {
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
         }
         .tactile:hover {
             transform: translateY(-1px) scale(1.01);
-            box-shadow: 0 16px 40px rgba(99, 102, 241, 0.18);
+            box-shadow: 0 0 30px rgba(99, 102, 241, 0.4);
+            border-color: rgba(99, 102, 241, 0.6);
         }
-        .tactile:active { transform: scale(0.98); }
+        .tactile:active { transform: scale(0.95); }
         .feed-line {
             background: linear-gradient(90deg, rgba(99, 102, 241, 0.18), rgba(14, 165, 233, 0.15), transparent);
         }
         .holo-progress {
             height: 6px;
             border-radius: 999px;
-            background: rgba(148, 163, 184, 0.25);
+            background: rgba(30, 41, 59, 0.8);
             overflow: hidden;
         }
         .holo-progress > span {
             display: block;
             height: 100%;
             border-radius: 999px;
-            background: linear-gradient(90deg, rgba(59, 130, 246, 0.8), rgba(129, 140, 248, 0.95));
-            box-shadow: 0 0 12px rgba(59, 130, 246, 0.5);
+            background: linear-gradient(90deg, rgba(99, 102, 241, 0.9), rgba(34, 211, 238, 0.95));
+            box-shadow: 0 0 16px rgba(34, 211, 238, 0.55);
             transition: width 0.3s ease;
         }
         .stagger-item { animation: rise 0.35s ease-out both; }
         @keyframes rise { from { transform: translateY(10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        h1, h2, h3 { letter-spacing: 0.04em; }
+        .scanline-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.04), transparent 25%, transparent 75%, rgba(34, 211, 238, 0.08));
+            mix-blend-mode: screen;
+            opacity: 0.35;
+            pointer-events: none;
+            animation: scan 6s linear infinite;
+        }
+        @keyframes scan { 0% { transform: translateY(-100%); } 100% { transform: translateY(100%); } }
     </style>
 </head>
-<body class="bg-[#f8fafc] text-slate-900 transition-colors duration-500">
+<body class="bg-[#020617] text-slate-100 transition-colors duration-500">
     
 
     <!-- LOGIN OVERLAY -->
-    <div id="login-screen" class="fixed inset-0 z-[100] flex items-center justify-center bg-indigo-600 p-4">
-        <div class="cyber-glass w-full max-w-md rounded-[2.5rem] shadow-2xl p-10 space-y-8">
+    <div id="login-screen" class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950 p-4 relative overflow-hidden">
+        <div class="scanline-overlay"></div>
+        <div class="cyber-glass w-full max-w-md rounded-[2.5rem] shadow-2xl p-10 space-y-8 relative">
             <div id="login-step-1" class="space-y-4">
                 <div class="text-center">
                     <div class="w-16 h-16 bg-indigo-600 rounded-2xl flex items-center justify-center text-white text-2xl font-black mx-auto shadow-xl mb-4">N</div>
-                    <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Nexus Hub</h1>
+                    <h1 class="text-3xl font-extrabold text-slate-100 tracking-tight">Nexus Hub</h1>
                     <p class="text-slate-500 font-medium">Select Your Portal</p>
                 </div>
                 <div class="grid grid-cols-1 gap-2">
@@ -104,7 +118,7 @@
                     <p id="auth-subtitle" class="text-slate-400 text-sm mt-1"></p>
                 </div>
                 <div class="space-y-4">
-                    <input id="auth-id-input" type="text" placeholder="Enter ID or PIN" class="w-full px-6 py-4 bg-slate-50 border-2 border-slate-100 rounded-3xl text-center text-xl font-black outline-none focus:border-indigo-600 transition-all">
+                    <input id="auth-id-input" type="text" placeholder="Enter ID or PIN" class="w-full px-6 py-4 bg-slate-900/70 border-2 border-slate-700 rounded-3xl text-center text-xl font-black text-slate-100 placeholder:text-slate-500 outline-none focus:border-indigo-500 transition-all">
                     <button onclick="handleAuthSubmit()" class="tactile w-full bg-slate-900 text-white py-4 rounded-3xl font-black shadow-lg hover:bg-black transition-all">Enter Portal</button>
                 </div>
             </div>
@@ -113,7 +127,7 @@
 
     <!-- MAIN APP CONTAINER -->
     <div id="app-container" class="hidden min-h-screen">
-        <nav class="fixed left-0 top-0 h-full w-20 lg:w-72 bg-white border-r border-slate-200 flex flex-col z-50 transition-all">
+        <nav class="fixed left-0 top-0 h-full w-20 lg:w-72 bg-slate-950/80 border-r border-slate-800 flex flex-col z-50 transition-all backdrop-blur-xl">
             <div class="p-8 flex items-center gap-4">
                 <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white font-black">N</div>
                 <span class="hidden lg:block font-black text-xl tracking-tighter">NEXUS HUB</span>
@@ -121,9 +135,9 @@
             
             <div class="flex-1 px-4 space-y-2 overflow-y-auto" id="nav-links"></div>
 
-            <div class="p-6 border-t border-slate-100 space-y-4">
-                <div id="active-user-badge" class="hidden lg:flex items-center gap-3 p-3 bg-slate-50 rounded-2xl border border-slate-100">
-                    <div class="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center text-xs font-bold" id="badge-initial">U</div>
+            <div class="p-6 border-t border-slate-800 space-y-4">
+                <div id="active-user-badge" class="hidden lg:flex items-center gap-3 p-3 cyber-glass rounded-2xl border border-slate-800">
+                    <div class="w-8 h-8 rounded-lg bg-indigo-500/20 text-indigo-200 flex items-center justify-center text-xs font-bold" id="badge-initial">U</div>
                     <div class="flex-1 min-w-0">
                         <p class="text-xs font-black truncate" id="badge-name">User Name</p>
                         <p class="text-[10px] text-slate-400 font-bold" id="badge-role">Role</p>
@@ -152,7 +166,7 @@
             <div id="view-owner" class="hidden space-y-10 max-w-7xl mx-auto">
                 <div class="flex justify-between items-end">
                     <div>
-                        <h1 class="text-4xl font-black tracking-tight text-slate-900">Executive Oversight</h1>
+                        <h1 class="text-4xl font-black tracking-tight text-slate-100">Executive Oversight</h1>
                         <p class="text-slate-500 font-medium">Complete facility monitoring</p>
                     </div>
                     <div class="flex gap-4">
@@ -167,11 +181,11 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="occupancy-boss"></div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    <div class="cyber-glass p-8 rounded-[2.5rem] border border-slate-200 shadow-sm">
+                    <div class="cyber-glass p-8 rounded-[2.5rem] border border-slate-800 shadow-sm">
                         <h3 class="text-xl font-black mb-6">Staff Activity</h3>
                         <div id="staff-active-list" class="space-y-4"></div>
                     </div>
-                    <div class="cyber-glass p-8 rounded-[2.5rem] border border-slate-200 shadow-sm">
+                    <div class="cyber-glass p-8 rounded-[2.5rem] border border-slate-800 shadow-sm">
                         <h3 class="text-xl font-black mb-6">Active Directives</h3>
                         <div id="boss-directives-list" class="space-y-4 text-center py-10 text-slate-400">
                              <p class="text-sm font-medium">No active broadcasts</p>
@@ -186,15 +200,15 @@
                 <div class="cyber-glass glow-border p-8 rounded-[2.5rem] shadow-xl space-y-6">
                     <div class="flex items-center gap-3"><h3 class="text-xl font-black">Register New Member</h3></div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <input id="reg-name" type="text" placeholder="Full Name" class="px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl">
-                        <input id="reg-id" type="text" placeholder="Desired Login ID" class="px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl uppercase">
+                        <input id="reg-name" type="text" placeholder="Full Name" class="px-5 py-4 bg-slate-900/70 border border-slate-700 rounded-2xl text-slate-100 placeholder:text-slate-500">
+                        <input id="reg-id" type="text" placeholder="Desired Login ID" class="px-5 py-4 bg-slate-900/70 border border-slate-700 rounded-2xl uppercase text-slate-100 placeholder:text-slate-500">
                     </div>
                     <div>
                         <p class="text-xs font-black text-slate-400 mb-2 px-2 uppercase">Membership Tier</p>
                         <div class="grid grid-cols-3 gap-2">
-                            <button onclick="setRegTier('Standard')" class="tier-btn py-3 rounded-xl border-2 border-slate-100 font-bold text-xs hover:bg-slate-50 transition-all bg-indigo-50 border-indigo-600 text-indigo-600" data-tier="Standard">Standard</button>
-                            <button onclick="setRegTier('Pro')" class="tier-btn py-3 rounded-xl border-2 border-slate-100 font-bold text-xs hover:bg-slate-50 transition-all" data-tier="Pro">Pro</button>
-                            <button onclick="setRegTier('VIP')" class="tier-btn py-3 rounded-xl border-2 border-slate-100 font-bold text-xs hover:bg-slate-50 transition-all" data-tier="VIP">VIP</button>
+                            <button onclick="setRegTier('Standard')" class="tier-btn tactile py-3 rounded-xl border-2 border-slate-100 font-bold text-xs hover:bg-slate-50 transition-all bg-indigo-50 border-indigo-600 text-indigo-600" data-tier="Standard">Standard</button>
+                            <button onclick="setRegTier('Pro')" class="tier-btn tactile py-3 rounded-xl border-2 border-slate-100 font-bold text-xs hover:bg-slate-50 transition-all" data-tier="Pro">Pro</button>
+                            <button onclick="setRegTier('VIP')" class="tier-btn tactile py-3 rounded-xl border-2 border-slate-100 font-bold text-xs hover:bg-slate-50 transition-all" data-tier="VIP">VIP</button>
                         </div>
                     </div>
                     <button onclick="registerUser()" class="tactile w-full bg-indigo-600 text-white py-5 rounded-3xl font-black">FINALIZE REGISTRATION</button>
@@ -202,7 +216,7 @@
                 <div class="cyber-glass glow-border p-5 rounded-[2rem] flex items-center justify-between">
                     <div>
                         <p class="text-[10px] font-black text-indigo-400 uppercase tracking-[0.3em]">Live Data Feed</p>
-                        <p class="text-sm font-bold text-slate-700">Registration stream · auto-updating</p>
+                        <p class="text-sm font-bold text-slate-300">Registration stream · auto-updating</p>
                     </div>
                     <div class="flex items-center gap-2 text-emerald-500 text-xs font-black uppercase">
                         <span class="inline-flex h-2.5 w-2.5 rounded-full bg-emerald-400 shadow-[0_0_12px_rgba(16,185,129,0.9)]"></span>
@@ -236,10 +250,10 @@
                     </div>
                     <button onclick="toggleModal('item-modal', true)" class="tactile bg-emerald-600 text-white px-8 py-4 rounded-2xl font-black">Add Item</button>
                 </div>
-                <div class="cyber-glass p-6 rounded-[2rem] border border-slate-200 shadow-sm">
+                <div class="cyber-glass p-6 rounded-[2rem] border border-slate-800 shadow-sm">
                     <div class="flex items-center gap-3">
                         <i class="fas fa-magnifying-glass text-slate-400"></i>
-                        <input id="mart-search" type="text" placeholder="Search products..." class="w-full text-sm font-semibold outline-none">
+                        <input id="mart-search" type="text" placeholder="Search products..." class="w-full text-sm font-semibold outline-none text-slate-100 placeholder:text-slate-500 bg-transparent">
                     </div>
                 </div>
                 <div id="manager-content" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
@@ -254,10 +268,10 @@
                     </div>
                     <button onclick="toggleModal('book-modal', true)" class="tactile bg-blue-600 text-white px-8 py-4 rounded-2xl font-black">Add Book</button>
                 </div>
-                <div class="cyber-glass p-6 rounded-[2rem] border border-slate-200 shadow-sm">
+                <div class="cyber-glass p-6 rounded-[2rem] border border-slate-800 shadow-sm">
                     <div class="flex items-center gap-3">
                         <i class="fas fa-magnifying-glass text-slate-400"></i>
-                        <input id="library-search" type="text" placeholder="Search books, authors..." class="w-full text-sm font-semibold outline-none">
+                        <input id="library-search" type="text" placeholder="Search books, authors..." class="w-full text-sm font-semibold outline-none text-slate-100 placeholder:text-slate-500 bg-transparent">
                     </div>
                 </div>
                 <div id="library-manager-content" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
@@ -273,11 +287,11 @@
                     <button onclick="toggleModal('class-modal', true)" class="tactile bg-orange-500 text-white px-8 py-4 rounded-2xl font-black">Add Class</button>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="cyber-glass p-6 rounded-[2rem] border border-slate-200 shadow-sm">
+                    <div class="cyber-glass p-6 rounded-[2rem] border border-slate-800 shadow-sm">
                         <h3 class="text-lg font-black mb-4">Equipment Status</h3>
                         <div id="gym-equipment-list" class="space-y-3"></div>
                     </div>
-                    <div class="cyber-glass p-6 rounded-[2rem] border border-slate-200 shadow-sm">
+                    <div class="cyber-glass p-6 rounded-[2rem] border border-slate-800 shadow-sm">
                         <h3 class="text-lg font-black mb-4">Class Schedule</h3>
                         <div id="gym-class-list" class="space-y-3"></div>
                     </div>
@@ -286,7 +300,7 @@
 
             <!-- VIEW: USER DASHBOARD -->
             <div id="view-user-dashboard" class="hidden space-y-8 max-w-6xl mx-auto">
-                <div class="flex items-center justify-between cyber-glass p-8 rounded-[2.5rem] border border-slate-200 shadow-sm">
+                <div class="flex items-center justify-between cyber-glass p-8 rounded-[2.5rem] border border-slate-800 shadow-sm">
                     <div class="flex items-center gap-5">
                         <div class="w-20 h-20 bg-indigo-600 rounded-3xl flex items-center justify-center text-white text-3xl font-black" id="u-avatar">?</div>
                         <div>
@@ -302,7 +316,7 @@
                     </div>
                     <div class="text-right">
                         <p class="text-xs font-black text-slate-400">NEXUS XP</p>
-                        <p class="text-5xl font-black text-indigo-600" id="u-xp">0</p>
+                        <p class="text-5xl font-black text-indigo-400 font-data" id="u-xp">0</p>
                     </div>
                 </div>
 
@@ -324,19 +338,19 @@
                             </div>
                         </div>
 
-                        <div class="cyber-glass p-8 rounded-[2.5rem] border border-slate-200">
+                        <div class="cyber-glass p-8 rounded-[2.5rem] border border-slate-800">
                             <h3 class="text-xl font-black mb-6">Activity Timeline</h3>
                             <div id="u-history-list" class="space-y-4"></div>
                         </div>
                     </div>
 
                     <div class="space-y-8">
-                        <div class="cyber-glass p-8 rounded-[2.5rem] border border-slate-200">
+                        <div class="cyber-glass p-8 rounded-[2.5rem] border border-slate-800">
                             <h3 class="text-xl font-black mb-4">Daily Quests</h3>
                             <div class="space-y-3" id="u-quest-list"></div>
                         </div>
 
-                        <div class="cyber-glass p-8 rounded-[2.5rem] border border-slate-200">
+                        <div class="cyber-glass p-8 rounded-[2.5rem] border border-slate-800">
                             <h3 class="text-xl font-black mb-4">Quick Mart Picks</h3>
                             <div id="u-mart-view" class="space-y-4"></div>
                         </div>
@@ -353,10 +367,10 @@
                     </div>
                     <div class="px-5 py-3 bg-blue-50 text-blue-600 font-black rounded-2xl text-xs uppercase">Live Updates</div>
                 </div>
-                <div class="cyber-glass p-6 rounded-[2rem] border border-slate-200 shadow-sm">
+                <div class="cyber-glass p-6 rounded-[2rem] border border-slate-800 shadow-sm">
                     <div class="flex items-center gap-3">
                         <i class="fas fa-magnifying-glass text-slate-400"></i>
-                        <input id="user-library-search" type="text" placeholder="Search books, authors..." class="w-full text-sm font-semibold outline-none">
+                        <input id="user-library-search" type="text" placeholder="Search books, authors..." class="w-full text-sm font-semibold outline-none text-slate-100 placeholder:text-slate-500 bg-transparent">
                     </div>
                 </div>
                 <div id="user-library-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
@@ -371,10 +385,10 @@
                     </div>
                     <div class="px-5 py-3 bg-emerald-50 text-emerald-600 font-black rounded-2xl text-xs uppercase">Stock Ready</div>
                 </div>
-                <div class="cyber-glass p-6 rounded-[2rem] border border-slate-200 shadow-sm">
+                <div class="cyber-glass p-6 rounded-[2rem] border border-slate-800 shadow-sm">
                     <div class="flex items-center gap-3">
                         <i class="fas fa-magnifying-glass text-slate-400"></i>
-                        <input id="user-mart-search" type="text" placeholder="Search mart products..." class="w-full text-sm font-semibold outline-none">
+                        <input id="user-mart-search" type="text" placeholder="Search mart products..." class="w-full text-sm font-semibold outline-none text-slate-100 placeholder:text-slate-500 bg-transparent">
                     </div>
                 </div>
                 <div id="user-mart-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
@@ -388,7 +402,7 @@
             <h3 class="text-2xl font-black mb-2">Nexus Directive</h3>
             <p class="text-slate-400 text-sm mb-6">Send a priority message to all staff dashboards.</p>
             <div class="space-y-4 mb-8">
-                <textarea id="broadcast-input" rows="4" placeholder="Type your directive here..." class="w-full px-5 py-4 bg-slate-50 border rounded-2xl resize-none focus:border-indigo-600 outline-none font-medium"></textarea>
+                <textarea id="broadcast-input" rows="4" placeholder="Type your directive here..." class="w-full px-5 py-4 bg-slate-900/70 border border-slate-700 rounded-2xl resize-none focus:border-indigo-500 outline-none font-medium text-slate-100 placeholder:text-slate-500"></textarea>
             </div>
             <div class="flex gap-3">
                 <button onclick="toggleModal('broadcast-modal', false)" class="tactile flex-1 py-4 font-bold text-slate-400">Cancel</button>
@@ -402,9 +416,9 @@
         <div class="cyber-glass w-full max-w-md rounded-[2.5rem] p-8 shadow-2xl">
             <h3 class="text-2xl font-black mb-6">New Mart Item</h3>
             <div class="space-y-4 mb-8">
-                <input id="item-name" type="text" placeholder="Name" class="w-full px-5 py-4 bg-slate-50 border rounded-2xl">
-                <input id="item-price" type="number" placeholder="Price" class="w-full px-5 py-4 bg-slate-50 border rounded-2xl">
-                <input id="item-stock" type="number" placeholder="Stock" class="w-full px-5 py-4 bg-slate-50 border rounded-2xl">
+                <input id="item-name" type="text" placeholder="Name" class="w-full px-5 py-4 bg-slate-900/70 border border-slate-700 rounded-2xl text-slate-100 placeholder:text-slate-500">
+                <input id="item-price" type="number" placeholder="Price" class="w-full px-5 py-4 bg-slate-900/70 border border-slate-700 rounded-2xl text-slate-100 placeholder:text-slate-500">
+                <input id="item-stock" type="number" placeholder="Stock" class="w-full px-5 py-4 bg-slate-900/70 border border-slate-700 rounded-2xl text-slate-100 placeholder:text-slate-500">
             </div>
             <div class="flex gap-3">
                 <button onclick="toggleModal('item-modal', false)" class="tactile flex-1 py-4 font-bold text-slate-400">Cancel</button>
@@ -418,9 +432,9 @@
         <div class="cyber-glass w-full max-w-md rounded-[2.5rem] p-8 shadow-2xl">
             <h3 class="text-2xl font-black mb-6">New Library Book</h3>
             <div class="space-y-4 mb-8">
-                <input id="book-title" type="text" placeholder="Title" class="w-full px-5 py-4 bg-slate-50 border rounded-2xl">
-                <input id="book-author" type="text" placeholder="Author" class="w-full px-5 py-4 bg-slate-50 border rounded-2xl">
-                <input id="book-total" type="number" placeholder="Total Copies" class="w-full px-5 py-4 bg-slate-50 border rounded-2xl">
+                <input id="book-title" type="text" placeholder="Title" class="w-full px-5 py-4 bg-slate-900/70 border border-slate-700 rounded-2xl text-slate-100 placeholder:text-slate-500">
+                <input id="book-author" type="text" placeholder="Author" class="w-full px-5 py-4 bg-slate-900/70 border border-slate-700 rounded-2xl text-slate-100 placeholder:text-slate-500">
+                <input id="book-total" type="number" placeholder="Total Copies" class="w-full px-5 py-4 bg-slate-900/70 border border-slate-700 rounded-2xl text-slate-100 placeholder:text-slate-500">
             </div>
             <div class="flex gap-3">
                 <button onclick="toggleModal('book-modal', false)" class="tactile flex-1 py-4 font-bold text-slate-400">Cancel</button>
@@ -434,9 +448,9 @@
         <div class="cyber-glass w-full max-w-md rounded-[2.5rem] p-8 shadow-2xl">
             <h3 class="text-2xl font-black mb-6">Schedule Gym Class</h3>
             <div class="space-y-4 mb-8">
-                <input id="class-name" type="text" placeholder="Class Name" class="w-full px-5 py-4 bg-slate-50 border rounded-2xl">
-                <input id="class-time" type="text" placeholder="Time Slot (e.g., 6:00 PM)" class="w-full px-5 py-4 bg-slate-50 border rounded-2xl">
-                <input id="class-coach" type="text" placeholder="Coach" class="w-full px-5 py-4 bg-slate-50 border rounded-2xl">
+                <input id="class-name" type="text" placeholder="Class Name" class="w-full px-5 py-4 bg-slate-900/70 border border-slate-700 rounded-2xl text-slate-100 placeholder:text-slate-500">
+                <input id="class-time" type="text" placeholder="Time Slot (e.g., 6:00 PM)" class="w-full px-5 py-4 bg-slate-900/70 border border-slate-700 rounded-2xl text-slate-100 placeholder:text-slate-500">
+                <input id="class-coach" type="text" placeholder="Coach" class="w-full px-5 py-4 bg-slate-900/70 border border-slate-700 rounded-2xl text-slate-100 placeholder:text-slate-500">
             </div>
             <div class="flex gap-3">
                 <button onclick="toggleModal('class-modal', false)" class="tactile flex-1 py-4 font-bold text-slate-400">Cancel</button>
@@ -659,20 +673,20 @@
             const lib = users.filter(u => u.location === 'Library').length;
             const mart = users.filter(u => u.location === 'Mart').length;
             document.getElementById(targetId).innerHTML = `
-                <div class="bg-white p-6 rounded-[2rem] border border-slate-200 shadow-sm text-center">
-                    <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center text-xl mx-auto mb-4"><i class="fas fa-dumbbell"></i></div>
-                    <p class="text-[10px] font-black text-slate-400 uppercase">Gym</p>
-                    <h4 class="text-3xl font-black">${gym}</h4>
+                <div class="tactile cyber-glass p-6 rounded-[2rem] border border-slate-800 shadow-sm text-center">
+                    <div class="w-12 h-12 bg-indigo-500/20 text-indigo-200 rounded-xl flex items-center justify-center text-xl mx-auto mb-4"><i class="fas fa-dumbbell"></i></div>
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-wider">Gym</p>
+                    <h4 class="text-3xl font-black font-data">${gym}</h4>
                 </div>
-                <div class="bg-white p-6 rounded-[2rem] border border-slate-200 shadow-sm text-center">
-                    <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center text-xl mx-auto mb-4"><i class="fas fa-book"></i></div>
-                    <p class="text-[10px] font-black text-slate-400 uppercase">Library</p>
-                    <h4 class="text-3xl font-black">${lib}</h4>
+                <div class="tactile cyber-glass p-6 rounded-[2rem] border border-slate-800 shadow-sm text-center">
+                    <div class="w-12 h-12 bg-cyan-500/20 text-cyan-200 rounded-xl flex items-center justify-center text-xl mx-auto mb-4"><i class="fas fa-book"></i></div>
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-wider">Library</p>
+                    <h4 class="text-3xl font-black font-data">${lib}</h4>
                 </div>
-                <div class="bg-white p-6 rounded-[2rem] border border-slate-200 shadow-sm text-center">
-                    <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center text-xl mx-auto mb-4"><i class="fas fa-shop"></i></div>
-                    <p class="text-[10px] font-black text-slate-400 uppercase">Mart</p>
-                    <h4 class="text-3xl font-black">${mart}</h4>
+                <div class="tactile cyber-glass p-6 rounded-[2rem] border border-slate-800 shadow-sm text-center">
+                    <div class="w-12 h-12 bg-emerald-500/20 text-emerald-200 rounded-xl flex items-center justify-center text-xl mx-auto mb-4"><i class="fas fa-shop"></i></div>
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-wider">Mart</p>
+                    <h4 class="text-3xl font-black font-data">${mart}</h4>
                 </div>`;
         }
 
@@ -741,7 +755,7 @@
             `;
 
             document.getElementById('u-history-list').innerHTML = u.history.map(h => `
-                <div class="tactile p-4 cyber-glass border border-slate-100 rounded-2xl flex justify-between items-center hover:bg-slate-50">
+                <div class="tactile p-4 cyber-glass border border-slate-800 rounded-2xl flex justify-between items-center hover:bg-slate-50">
                     <div class="flex items-center gap-4">
                         <div class="w-2 h-2 rounded-full bg-indigo-500"></div>
                         <div><p class="font-bold text-sm">${h.zone}</p><p class="text-[10px] text-slate-400 font-bold uppercase">${h.date} @ ${h.time}</p></div>
@@ -760,7 +774,7 @@
             const query = document.getElementById('user-library-search')?.value?.toLowerCase() || '';
             const filtered = libraryBooks.filter(book => `${book.title} ${book.author}`.toLowerCase().includes(query));
             document.getElementById('user-library-list').innerHTML = filtered.map(book => `
-                <div class="stagger-item tactile cyber-glass p-6 rounded-3xl border border-slate-100 shadow-sm">
+                <div class="stagger-item tactile cyber-glass p-6 rounded-3xl border border-slate-800 shadow-sm">
                     <div class="flex items-start justify-between gap-4">
                         <div>
                             <h4 class="font-black mb-1">${book.title}</h4>
@@ -769,7 +783,7 @@
                         <span class="text-[10px] font-black ${book.available > 0 ? 'text-blue-600 bg-blue-50' : 'text-red-500 bg-red-50'} px-3 py-1 rounded-full uppercase">${book.available > 0 ? 'Available' : 'Checked Out'}</span>
                     </div>
                     <div class="mt-4 flex items-center justify-between">
-                        <p class="text-xs font-bold text-slate-500">${book.available} of ${book.total} ready</p>
+                        <p class="text-xs font-bold text-slate-400 font-data">${book.available} of ${book.total} ready</p>
                         <span class="text-[10px] font-black text-slate-400 uppercase">Library</span>
                     </div>
                     <div class="holo-progress mt-3">
@@ -782,7 +796,7 @@
             const query = document.getElementById('user-mart-search')?.value?.toLowerCase() || '';
             const filtered = martItems.filter(item => item.name.toLowerCase().includes(query));
             document.getElementById('user-mart-list').innerHTML = filtered.map(item => `
-                <div class="stagger-item tactile cyber-glass p-6 rounded-3xl border border-slate-100 shadow-sm">
+                <div class="stagger-item tactile cyber-glass p-6 rounded-3xl border border-slate-800 shadow-sm">
                     <div class="flex items-start justify-between gap-4">
                         <div>
                             <h4 class="font-black mb-1">${item.name}</h4>
@@ -791,7 +805,7 @@
                         <span class="text-[10px] font-black ${item.stock > 0 ? 'text-emerald-600 bg-emerald-50' : 'text-red-500 bg-red-50'} px-3 py-1 rounded-full uppercase">${item.stock > 0 ? 'In Stock' : 'Out'}</span>
                     </div>
                     <div class="mt-4 flex items-center justify-between">
-                        <p class="text-xs font-bold text-slate-500">${item.stock} units available</p>
+                        <p class="text-xs font-bold text-slate-400 font-data">${item.stock} units available</p>
                         <span class="text-[10px] font-black text-emerald-600 uppercase">Mart</span>
                     </div>
                     <div class="holo-progress mt-3">
@@ -808,7 +822,7 @@
                 { l: 'Revenue', v: '₹84,200', i: 'fa-indian-rupee-sign', c: 'emerald' },
                 { l: 'Incidents', v: '0', i: 'fa-triangle-exclamation', c: 'orange' },
                 { l: 'Active Staff', v: '4', i: 'fa-user-tie', c: 'blue' }
-            ].map(s => `<div class="tactile cyber-glass p-6 rounded-3xl border border-slate-100 shadow-sm"><i class="fas ${s.i} text-${s.c}-600 mb-4 text-xl"></i><p class="text-[10px] font-black text-slate-400 uppercase tracking-wider">${s.l}</p><h4 class="text-2xl font-black">${s.v}</h4></div>`).join('');
+            ].map(s => `<div class="tactile cyber-glass p-6 rounded-3xl border border-slate-800 shadow-sm"><i class="fas ${s.i} text-${s.c}-400 mb-4 text-xl"></i><p class="text-[10px] font-black text-slate-400 uppercase tracking-wider">${s.l}</p><h4 class="text-2xl font-black font-data">${s.v}</h4></div>`).join('');
 
             const directivesList = document.getElementById('boss-directives-list');
             if (activeBroadcast) {
@@ -828,7 +842,7 @@
                         <div class="w-8 h-8 bg-indigo-600 text-white rounded-lg flex items-center justify-center text-xs font-bold">${u.name[0]}</div>
                         <div><p class="font-bold text-sm">${u.name}</p><p class="text-[8px] font-black text-slate-400">${u.history[0]?.time || 'Just now'}</p></div>
                     </div>
-                    <span class="text-[10px] font-black px-3 py-1 bg-white border border-slate-200 rounded-lg uppercase">${u.location}</span>
+                    <span class="text-[10px] font-black px-3 py-1 bg-slate-900/70 border border-slate-700 rounded-lg uppercase text-slate-200">${u.location}</span>
                 </div>`).join('');
         }
 
@@ -836,15 +850,15 @@
         function renderGuard() {
             document.getElementById('guard-total-users').innerText = `${users.length} Users Tracked`;
             document.getElementById('guard-user-control-list').innerHTML = users.map(u => `
-                <div class="tactile cyber-glass p-6 rounded-3xl border border-slate-200 flex flex-col md:flex-row items-center justify-between gap-6 shadow-sm">
+                <div class="tactile cyber-glass p-6 rounded-3xl border border-slate-800 flex flex-col md:flex-row items-center justify-between gap-6 shadow-sm">
                     <div class="flex items-center gap-4 min-w-[200px]">
                         <div class="w-12 h-12 bg-red-50 text-red-600 rounded-2xl flex items-center justify-center text-xl font-black">${u.name[0]}</div>
-                        <div><p class="font-black text-slate-800">${u.name}</p><p class="text-[10px] font-black text-slate-400 uppercase">${u.location}</p></div>
+                        <div><p class="font-black text-slate-100">${u.name}</p><p class="text-[10px] font-black text-slate-400 uppercase">${u.location}</p></div>
                     </div>
                     <div class="flex-1 flex flex-wrap gap-2 justify-center">
-                        ${LOCATIONS.map(loc => `<button onclick="moveUser('${u.id}', '${loc}')" class="tactile px-4 py-2 rounded-xl text-xs font-black transition-all ${u.location === loc ? 'bg-red-600 text-white shadow-lg' : 'bg-slate-50 text-slate-400 hover:bg-slate-100'}">${loc}</button>`).join('')}
+                        ${LOCATIONS.map(loc => `<button onclick="moveUser('${u.id}', '${loc}')" class="tactile px-4 py-2 rounded-xl text-xs font-black transition-all ${u.location === loc ? 'bg-red-600 text-white shadow-lg' : 'bg-slate-800 text-slate-200 hover:bg-slate-700'}">${loc}</button>`).join('')}
                     </div>
-                    <div class="text-right"><p class="font-black text-red-600">ID: ${u.id}</p></div>
+                    <div class="text-right"><p class="font-black text-red-400 font-data">ID: ${u.id}</p></div>
                 </div>`).join('');
         }
 
@@ -862,12 +876,12 @@
             const query = document.getElementById('mart-search')?.value?.toLowerCase() || '';
             const filtered = martItems.filter(item => item.name.toLowerCase().includes(query));
             document.getElementById('manager-content').innerHTML = filtered.map((i, index) => `
-                <div class="stagger-item tactile cyber-glass p-6 rounded-3xl border border-slate-100 shadow-sm" style="animation-delay: ${index * 40}ms;">
+                <div class="stagger-item tactile cyber-glass p-6 rounded-3xl border border-slate-800 shadow-sm" style="animation-delay: ${index * 40}ms;">
                     <div class="flex items-center justify-between">
                         <h4 class="font-black mb-1">${i.name}</h4>
                         <span class="text-[10px] font-black ${i.stock > 0 ? 'text-emerald-600 bg-emerald-50' : 'text-red-500 bg-red-50'} px-3 py-1 rounded-full uppercase">${i.stock > 0 ? 'In Stock' : 'Out'}</span>
                     </div>
-                    <p class="text-xs text-slate-400 mb-4">Stock: ${i.stock} | ₹${i.price}</p>
+                    <p class="text-xs text-slate-400 mb-4 font-data">Stock: ${i.stock} | ₹${i.price}</p>
                     <div class="holo-progress mb-4">
                         <span style="width: ${Math.round((i.stock / Math.max(1, i.stock + i.sold)) * 100)}%"></span>
                     </div>
@@ -882,7 +896,7 @@
             const query = document.getElementById('library-search')?.value?.toLowerCase() || '';
             const filtered = libraryBooks.filter(book => `${book.title} ${book.author}`.toLowerCase().includes(query));
             document.getElementById('library-manager-content').innerHTML = filtered.map((book, index) => `
-                <div class="stagger-item tactile cyber-glass p-6 rounded-3xl border border-slate-100 shadow-sm" style="animation-delay: ${index * 40}ms;">
+                <div class="stagger-item tactile cyber-glass p-6 rounded-3xl border border-slate-800 shadow-sm" style="animation-delay: ${index * 40}ms;">
                     <div class="flex items-start justify-between gap-4">
                         <div>
                             <h4 class="font-black mb-1">${book.title}</h4>
@@ -890,7 +904,7 @@
                         </div>
                         <span class="text-[10px] font-black ${book.available > 0 ? 'text-blue-600 bg-blue-50' : 'text-red-500 bg-red-50'} px-3 py-1 rounded-full uppercase">${book.available > 0 ? 'Available' : 'Waitlist'}</span>
                     </div>
-                    <p class="text-xs text-slate-400 mb-4">Available: ${book.available} / ${book.total}</p>
+                    <p class="text-xs text-slate-400 mb-4 font-data">Available: ${book.available} / ${book.total}</p>
                     <div class="holo-progress mb-4">
                         <span style="width: ${Math.round((book.available / book.total) * 100)}%"></span>
                     </div>
@@ -903,16 +917,16 @@
 
         function renderGymManager() {
             document.getElementById('gym-equipment-list').innerHTML = gymEquipment.map((item, index) => `
-                <div class="stagger-item tactile cyber-glass flex items-center justify-between border border-slate-100 rounded-2xl p-4" style="animation-delay: ${index * 40}ms;">
+                <div class="stagger-item tactile cyber-glass flex items-center justify-between border border-slate-800 rounded-2xl p-4" style="animation-delay: ${index * 40}ms;">
                     <div>
                         <p class="font-black text-sm">${item.name}</p>
-                        <p class="text-[10px] font-black text-slate-400 uppercase">${item.count} Units</p>
+                        <p class="text-[10px] font-black text-slate-400 uppercase font-data">${item.count} Units</p>
                     </div>
                     <button onclick="toggleEquipmentStatus(${item.id})" class="tactile text-[10px] font-black px-3 py-1 rounded-full ${item.status === 'Operational' ? 'bg-emerald-100 text-emerald-600' : 'bg-amber-100 text-amber-600'} uppercase">${item.status}</button>
                 </div>`).join('');
 
             document.getElementById('gym-class-list').innerHTML = gymClasses.map((item, index) => `
-                <div class="stagger-item tactile cyber-glass flex items-center justify-between border border-slate-100 rounded-2xl p-4" style="animation-delay: ${index * 40}ms;">
+                <div class="stagger-item tactile cyber-glass flex items-center justify-between border border-slate-800 rounded-2xl p-4" style="animation-delay: ${index * 40}ms;">
                     <div>
                         <p class="font-black text-sm">${item.name}</p>
                         <p class="text-[10px] font-black text-slate-400 uppercase">${item.time} · Coach ${item.coach}</p>
@@ -998,7 +1012,7 @@
         }
 
         function renderReceptionist() {
-            document.getElementById('recent-admissions-list').innerHTML = users.slice().reverse().map((u, index) => `<div class="stagger-item tactile cyber-glass feed-line flex items-center gap-4 p-4 rounded-2xl border border-slate-100" style="animation-delay: ${index * 40}ms;"><div class="w-10 h-10 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center font-black">${u.name[0]}</div><div class="flex-1"><p class="font-black text-sm">${u.name} <span class="text-[8px] px-2 py-0.5 bg-slate-100 rounded ml-1 uppercase">${u.tier}</span></p><p class="text-[10px] text-slate-400">ID: ${u.id}</p></div><div class="text-[10px] font-black px-3 py-1 bg-emerald-100 text-emerald-600 rounded-full">${u.location}</div></div>`).join('');
+            document.getElementById('recent-admissions-list').innerHTML = users.slice().reverse().map((u, index) => `<div class="stagger-item tactile cyber-glass feed-line flex items-center gap-4 p-4 rounded-2xl border border-slate-800" style="animation-delay: ${index * 40}ms;"><div class="w-10 h-10 bg-indigo-500/20 text-indigo-200 rounded-xl flex items-center justify-center font-black">${u.name[0]}</div><div class="flex-1"><p class="font-black text-sm tracking-wider">${u.name} <span class="text-[8px] px-2 py-0.5 bg-slate-800 rounded ml-1 uppercase">${u.tier}</span></p><p class="text-[10px] text-cyan-300 font-data">ID: ${u.id}</p></div><div class="text-[10px] font-black px-3 py-1 bg-emerald-500/20 text-emerald-200 rounded-full">${u.location}</div><div class="text-[10px] font-data text-cyan-300 ml-auto">${u.history[0]?.time || 'Just now'}</div></div>`).join('');
         }
 
         function toggleModal(id, show) { document.getElementById(id).classList.toggle('hidden', !show); }
