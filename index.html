@@ -8,7 +8,35 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; position: relative; }
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background-image:
+                radial-gradient(circle at 20% 20%, rgba(34, 211, 238, 0.12), transparent 35%),
+                radial-gradient(circle at 80% 30%, rgba(99, 102, 241, 0.12), transparent 40%),
+                linear-gradient(rgba(148, 163, 184, 0.08) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(148, 163, 184, 0.08) 1px, transparent 1px);
+            background-size: auto, auto, 40px 40px, 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        main, nav, #login-screen { position: relative; z-index: 1; }
+        body.theme-dark { background: #020617; color: #e2e8f0; }
+        body.theme-light { background: #f8fafc; color: #0f172a; }
+        body.theme-light .cyber-glass {
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(148, 163, 184, 0.35);
+            box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.06), 0 12px 40px rgba(79, 70, 229, 0.12);
+        }
+        body.theme-light .glow-border { border-color: rgba(99, 102, 241, 0.4); }
+        body.theme-light input,
+        body.theme-light textarea {
+            background: #f8fafc !important;
+            color: #0f172a !important;
+            border-color: #e2e8f0 !important;
+        }
         .glass { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(12px); }
         .active-glow { box-shadow: 0 0 20px rgba(79, 70, 229, 0.3); }
         .reward-pop { animation: pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
@@ -66,7 +94,7 @@
         @keyframes scan { 0% { transform: translateY(-100%); } 100% { transform: translateY(100%); } }
     </style>
 </head>
-<body class="bg-[#020617] text-slate-100 transition-colors duration-500">
+<body class="theme-dark text-slate-100 transition-colors duration-500">
     
 
     <!-- LOGIN OVERLAY -->
@@ -143,6 +171,9 @@
                         <p class="text-[10px] text-slate-400 font-bold" id="badge-role">Role</p>
                     </div>
                 </div>
+                <button onclick="toggleTheme()" class="tactile w-full flex items-center justify-center gap-2 text-cyan-300 font-bold text-xs py-2 border border-cyan-400/40 hover:border-cyan-300 rounded-xl transition-all">
+                    <i class="fas fa-moon"></i> <span id="theme-toggle-label">Dark Theme</span>
+                </button>
                 <button onclick="logout()" class="tactile w-full flex items-center justify-center gap-2 text-red-500 font-bold text-sm py-2 hover:bg-red-50 rounded-xl transition-all">
                     <i class="fas fa-power-off"></i> <span class="hidden lg:block">Log Out</span>
                 </button>
@@ -1042,6 +1073,35 @@
         document.addEventListener('visibilitychange', () => {
             if (document.visibilityState === 'hidden') saveState();
         });
+
+        const THEME_KEY = 'nexus_theme';
+
+        function setTheme(theme) {
+            const body = document.body;
+            const label = document.getElementById('theme-toggle-label');
+            if (theme === 'light') {
+                body.classList.remove('theme-dark');
+                body.classList.add('theme-light');
+                if (label) label.innerText = 'Light Theme';
+            } else {
+                body.classList.remove('theme-light');
+                body.classList.add('theme-dark');
+                if (label) label.innerText = 'Dark Theme';
+            }
+            localStorage.setItem(THEME_KEY, theme);
+        }
+
+        function toggleTheme() {
+            const current = localStorage.getItem(THEME_KEY) || 'dark';
+            setTheme(current === 'dark' ? 'light' : 'dark');
+        }
+
+        function initTheme() {
+            const stored = localStorage.getItem(THEME_KEY) || 'dark';
+            setTheme(stored);
+        }
+
+        initTheme();
     </script>
 </body>
 </html>
